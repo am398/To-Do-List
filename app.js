@@ -12,56 +12,44 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 
-var items = ['Buy Food'];
+var items = ['Shopping', 'Cooking', 'Eating'];
+var workItems = [];
+
+const today = new Date();
+
+const options = {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long'
+};
+
+const day = today.toLocaleDateString("hi-IN", options);
 
 app.get('/', (req, res) => {
-
-
-    const today = new Date();
-
-    const options = {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long'
-    };
-
-    const day = today.toLocaleDateString("hi-IN", options);
-
-    // var currentday = today.getDay();
-    // var day = '';
-    // switch (currentday) {
-    //     case 0:
-    //         day = "Sunday";
-    //         break;
-    //     case 1:
-    //         day = "Monday";
-    //         break;
-    //     case 2:
-    //         day = "Tuesday";
-    //         break;
-    //     case 3:
-    //         day = "Wednesday";
-    //         break;
-    //     case 4:
-    //         day = "Thrusday";
-    //         break;
-    //     case 5:
-    //         day = "Friday";
-    //         break;
-    //     case 6:
-    //         day = "Saturday";
-    //         break;
-    //     default:
-    //         console.log("Error: current day is equal to: " + currentday);
-    // }
-    res.render('list', { Day: day, newListItem: items });
+    res.render('list', { Day: day, newListItem: items, List: null });
 });
+app.get("/work", function (req, res) {
+    res.render("list", { Day: day, List: "Work List", newListItem: workItems });
+});
+
 
 app.post("/", function (req, res) {
     var item = req.body.newItem;
-    console.log(item);
-    items.push(item);
-    res.redirect("/");
+
+    if (req.body.List === "Work List") {
+        workItems.push(item);
+        res.redirect("/work");
+    } else {
+        console.log(req.body);
+        items.push(item);
+        res.redirect("/");
+    }
+});
+
+app.post("/work", function (req, res) {
+    let item = req.body.newItem;
+    workItems.push(item);
+    res.redirect("/work");
 });
 
 app.listen(3000, () => {
