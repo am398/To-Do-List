@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 
-var items = ['Buy Food'];
+var items = ['Shopping', 'Cooking', 'Eating'];
 var workItems = [];
 
 const today = new Date();
