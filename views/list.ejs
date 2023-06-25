@@ -1,4 +1,3 @@
-
 <%- include('header'); -%>
     <div class="box" id="heading">
         <h1>
@@ -16,14 +15,17 @@
 
             <div class="box">
 
-                <% for (var i=0;i<newListItem.length;i++) {%>
-                    <div class="item">
-                        <input type="checkbox">
-                        <p>
-                            <%= newListItem[i] %>
-                        </p>
-                    </div>
-                    <% } %>
+                <% newListItem.forEach(function(item) {%>
+                    <form action="/delete" method="post">
+                        <div class="item">
+                            <input type="hidden" name="list" value="<%= List %>">
+                            <input type="checkbox" name="checkbox" onChange="this.form.submit()" value="<%=item._id%>">
+                            <p>
+                                <%= item.name %>
+                            </p>
+                        </div>
+                    </form>
+                    <% }) %>
 
 
                         <form class="item" action="/" method="post">
@@ -32,4 +34,4 @@
                         </form>
             </div>
 
-<%- include('footer'); -%>
+            <%- include('footer'); -%>
