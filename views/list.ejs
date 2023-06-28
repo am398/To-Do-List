@@ -1,29 +1,40 @@
-
 <%- include('header'); -%>
-    <div class="box" id="heading">
+    <div class="box" id="heading" style="max-width: 1000px;">
         <h1>
             <%= Day %>
         </h1>
     </div>
 
-    <% if(List !=null ) {%>
-        <div class="box" id="heading">
+    <% if(List !="Main" ) {%>
+        <div class="box" id="heading" style="max-width: 250px; border-radius: 20px">
             <h1>
                 <%= List %>
             </h1>
         </div>
+        <% } else {%>
+            <div class="box" id="heading" style="max-width: 250px; border-radius: 20px">
+                <h1>
+                    My ToDoList For Today
+                </h1>
+            </div>
         <% } %>
+        
+
+
 
             <div class="box">
 
-                <% for (var i=0;i<newListItem.length;i++) {%>
-                    <div class="item">
-                        <input type="checkbox">
-                        <p>
-                            <%= newListItem[i] %>
-                        </p>
-                    </div>
-                    <% } %>
+                <% newListItem.forEach(function(item) {%>
+                    <form action="/delete" method="post">
+                        <div class="item">
+                            <input type="checkbox" name="checkbox" onChange="this.form.submit()" value="<%=item._id%>">
+                            <p>
+                                <%= item.name %>
+                            </p>
+                        </div>
+                        <input type="hidden" name="list" value="<%= List %>">
+                    </form>
+                    <% }) %>
 
 
                         <form class="item" action="/" method="post">
@@ -32,4 +43,4 @@
                         </form>
             </div>
 
-<%- include('footer'); -%>
+            <%- include('footer'); -%>
